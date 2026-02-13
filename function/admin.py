@@ -1,6 +1,5 @@
 import function.utils as Utils
 import database.db as DB
-import main
 
 def request_creation( team:str, name:str = None, attack:int = None, defense:int = None ):
     Utils.clear_console( 1 )
