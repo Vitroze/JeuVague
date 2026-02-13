@@ -1,8 +1,8 @@
 import os
 import function.color as Color
-import time
-import math
 import main
+from time import sleep
+from math import floor
 
 def number_isvalidpositive( number: int ):
     """Vérifie si la donnée saisie est un nombre. Si c'est une chaine de caractère alors on convertira en nombre si possible"""
@@ -36,7 +36,7 @@ def clear_console( delay: int=None ):
     """Efface la console après un certain temps compatible avec les systèmes d'exploitations de MacOS, Windows et Linux"""
 
     if delay:
-        time.sleep( delay )
+        sleep( delay )
 
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -59,7 +59,7 @@ def request_number(text, title):
     choose = request( text )
     if not number_isvalidpositive( choose ):
         PrintError(title, "Merci de rentrer un nombre valide")
-        time.sleep(1)
+        sleep(1)
         return
     
     return int(choose)
@@ -73,15 +73,15 @@ def return_main( title, error ):
 def back_option( duration:int = 1 ):
     """Retourner dans le menu principal après un certain temps"""
 
-    time.sleep( duration )
+    sleep( duration )
     main.main()
 
 def format_time( time:int )->str:
     """Transforme un nombre en une chaine de caractère qui sera mis en forme (ex : 2h30m15s)"""
 
-    seconds = math.floor(time % 60)
-    minuts = math.floor(time / 60)
-    hours = math.floor(minuts / 60)
+    seconds = floor(time % 60)
+    minuts = floor(time / 60)
+    hours = floor(minuts / 60)
     hours = hours % 24
     minuts = minuts % 60
 
