@@ -7,10 +7,10 @@ CONFIG = {
     "database_name": "jeuvague",
 }
 
-DB, PLAYERDATA, CONFIGDB = None, None, None
+DB, PLAYERDATA, CONFIGDATA = None, None, None
 
 def connect():
-    global DB, PLAYERDATA, CONFIGDB
+    global DB, PLAYERDATA, CONFIGDATA
 
     oClient = DataBase.MongoClient(f"mongodb://{CONFIG['host']}:{CONFIG['port']}/")
     DB = oClient[CONFIG["database_name"]]
@@ -24,12 +24,12 @@ def connect():
         DB.create_collection(f"{CONFIG["database_name"]}_config")
 
     PLAYERDATA = DB[f"{CONFIG["database_name"]}_playerdata"]
-    CONFIGDB = DB[f"{CONFIG["database_name"]}_config"]
+    CONFIGDATA = DB[f"{CONFIG["database_name"]}_config"]
 
     Utils.PrintSuccess("DataBase", "La base de donnée est connecté")
 
 def update_person( name: str, team: str, attack:int, defense: int, health: int ):
-    CONFIGDB.update_one({
+    CONFIGDATA.update_one({
         "name": name,
         "team": team,
     }, { 
@@ -56,7 +56,7 @@ def create_allies( name: str, attack:int, defense:int, health: int ):
         update_person( name, "allies", attack, defense, health)
         return
     
-    CONFIGDB.insert_one({
+    CONFIGDATA.insert_one({
         "name": name,
         "attack": attack,
         "defense": defense,
@@ -81,7 +81,7 @@ def create_monsters( name: str, attack:int, defense:int, health: int ):
         update_person( name, "monsters", attack, defense, health)
         return
     
-    CONFIGDB.insert_one({
+    CONFIGDATA.insert_one({
         "name": name,
         "attack": attack,
         "defense": defense,
@@ -92,14 +92,14 @@ def create_monsters( name: str, attack:int, defense:int, health: int ):
     Utils.PrintSuccess("DataBase", f"Le monstre '{ name }' a bien été enregistré")
 
 def is_exist_monsters( name:str ) -> bool:
-    return CONFIGDB.find_one({
+    return CONFIGDATA.find_one({
         "name": name,
         "team": "monsters",
     }) != None
 
 
 def is_exist_allies( name:str ) -> bool:
-    return CONFIGDB.find_one({
+    return CONFIGDATA.find_one({
         "name": name,
         "team": "allies",
     }) != None
@@ -120,7 +120,7 @@ def delete_monsters( name: str ):
         Utils.PrintError("DataBase", "Le monstre n'existe pas")
         return
 
-    CONFIGDB.delete_one({
+    CONFIGDATA.delete_one({
         "name": name,
         "team": "monsters"
     })
@@ -136,7 +136,7 @@ def delete_allies( name: str ):
         Utils.PrintError("DataBase", "L'alliée n'existe pas")
         return
 
-    CONFIGDB.delete_one({
+    CONFIGDATA.delete_one({
         "name": name,
         "team": "allies"
     })
@@ -144,22 +144,22 @@ def delete_allies( name: str ):
     Utils.PrintSuccess("DataBase", f"L'alliée '{ name }' a bien été supprimé")
 
 def get_allies():
-    return CONFIGDB.find({
+    return CONFIGDATA.find({
         "team": "allies"
     })
 
 def get_monsters(exclude:list={}):
-    return CONFIGDB.find({
+    return CONFIGDATA.find({
         "team": "monsters"
     }, exclude)
 
 def get_countmonsters():
-    return CONFIGDB.count_documents({
+    return CONFIGDATA.count_documents({
         "team": "monsters"
     })
 
 def get_stats(name:str, team: str, exclude:list={})->list:
-    return CONFIGDB.find_one({
+    return CONFIGDATA.find_one({
         "name": name,
         "team": team,
     }, exclude)
