@@ -9,18 +9,22 @@ MONSTER_MIN = 1 # Il faut au moins 1 monstre pour pouvori commencer la partie
 
 Person = {}
 def list_nameallies():
+    """Mettre sous forme de dictionnaire les prénoms des alliés. La clé sera comme une table séquentielle."""
+
     name = {}
     for Data in DB.get_allies():
         name[len(name)] = Data["name"]
 
     return name
 
-def show_allies(list):
+def show_allies(allies:dict):
+    """Affiche dans la console les alliés qu'on peut prendre."""
+
     Utils.clear_console(1)
     print("Choisir votre équipe parmis cette liste :")
 
     count = 1
-    for name in list.values():
+    for name in allies.values():
         if name in Person:
             count += 1
             continue
@@ -28,7 +32,9 @@ def show_allies(list):
         print(f"{count}. {name}")
         count += 1
 
-def create_person(name, team):
+def create_person(name:str, team:str)->ObjectPerson:
+    """Crée un personnage via ses données enregistrés dans la base de donnée ainsi l'objet."""
+
     data = DB.get_stats(name, team, {
         "_id": 0,
         "attack": 1,
@@ -36,14 +42,14 @@ def create_person(name, team):
         "health": 1,
     })
 
-    person = ObjectPerson(name, data["attack"], data["defense"], data["health"])
-    
-    return person
+    return ObjectPerson(name, data["attack"], data["defense"], data["health"])
 
 
-def is_error(allies):
+def is_error(allies:dict)->bool:
+    """Vérifie si on ne peut pas commencer une partie."""
+
     errors = {
-        "Impossible de démarrer la partie car il n'a pas assez d'alliés enregistrer dans la base de donnée": len(allies) != SIZE_TEAM,
+        "Impossible de démarrer la partie car il n'a pas assez d'alliés enregistrer dans la base de donnée": len(allies) < SIZE_TEAM,
         "Impossible de démarrer la partie car il n'a pas assez de monstres enregistrer dans la base de donnée": DB.get_countmonsters() < MONSTER_MIN,
     }
 
@@ -51,9 +57,12 @@ def is_error(allies):
         if errors[error]:
             Utils.return_main("Choisir son équipe", error)
             return True
+
     return False
 
-def request_choose_allies(allies):
+def request_choose_allies(allies:list):
+    """Demande à l'utilisateur de choisir un alliée"""
+
     choose = Utils.request_number("Choisir l'ID du personnage :", "Choisir son équipe")
     if not choose:
         return
@@ -70,10 +79,14 @@ def request_choose_allies(allies):
     
     Person[name] = create_person(name, "allies")
 
-def request_username():
+def request_username()->str:
+    """Demande à l'utilisateur d'entrer un nom d'utilisateur. On ne mettre pas ce qui rentre en minuscule. """
+
     return Utils.request("Merci d'entrer un nom d'utilisateur.", True)
 
-def choose_team():
+def manage_party():
+    """Gestion de la partie"""
+
     allies = list_nameallies()
     if is_error(allies): return
 
@@ -84,11 +97,14 @@ def choose_team():
         request_choose_allies(allies)
 
     score = Fight.fight()
-
     Score.save_score(username, score)
 
-def team_iscomplete():
+def team_iscomplete()->bool:
+    """Vérifie si l'équipe est complet"""
+
     return len(Person) == SIZE_TEAM
 
-def get_teams():
+def get_teams()->dict:
+    """Liste de nos alliés qu'on a sélectionné et qu'ils sont toujours en vie."""
+
     return Person

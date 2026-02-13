@@ -17,9 +17,8 @@ Merci de choisir ces options (1 et 4) pour commencer votre partie :
 """
 
 def choose_option():
-    """
-    Menu Principal
-    """
+    """Menu Principal"""
+
     request = input( "Choisir votre option (1 et 5) : ")
     match request:
         case "1":
@@ -27,7 +26,7 @@ def choose_option():
         case "2":
             Admin.request_delete()
         case "3":
-            Game.choose_team()
+            Game.manage_party()
         case "4":
             Score.showScore()
         case "5":
@@ -43,6 +42,7 @@ def main():
 
     choose_option()
 
+# Evite que lorsqu'on charge le fichier main depuis les autres ficheirs qu'on lance pas le début partie.
 if __name__ == "__main__":
     DB.connect()
     main()

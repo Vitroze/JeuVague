@@ -1,8 +1,9 @@
 import database.db as DB
 import function.utils as Utils
-from time import sleep
 
 def showScore():
+    """Affiche les scores dans la console"""
+
     Utils.clear_console()
 
     place = 1
@@ -14,6 +15,8 @@ def showScore():
     Utils.request("Appuyez sur ENTRER pour sortir du classement")
     Utils.back_option()
 
-def save_score( username, score ):
+def save_score( username:str, score:int ):
+    """Sauvegarde les données dans la base de donnée tout en retournant dans le menu principale après 2 secondes"""
+
     DB.save_score( username, score )
     Utils.back_option( 2 )
