@@ -2,6 +2,8 @@ import function.utils as Utils
 import database.db as DB
 
 def request_creation( team:str, name:str = None, attack:int = None, defense:int = None ):
+    """Processus de création d'un allié ou d'un monstre"""
+
     Utils.clear_console( 1 )
     print(f"============ {team} ============")
 
@@ -40,6 +42,7 @@ def request_creation( team:str, name:str = None, attack:int = None, defense:int 
     Utils.back_option()
 
 def request_creations_choose_team():
+    """Demande a l'utilisateur de choisir entre allies ou monstre pour le processus de création"""
     choose = Utils.request( "Merci de choisir entre 'allies' ou 'monstre'.")
 
     match choose:
@@ -52,6 +55,8 @@ def request_creations_choose_team():
             request_creations_choose_team()
 
 def request_delete():
+    """Processus de suppression d'un personnage"""
+
     Utils.clear_console(1)
 
     # Request
