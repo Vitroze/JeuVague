@@ -7,16 +7,6 @@ class Inventory:
         self.person = None
         self.capacity = capacity
 
-    def set_person( self, person ):
-        if not Utils.person_isvalid( person ):
-            Utils.PrintError("Inventaire", "Le personnage n'existe pas")
-            return
-        
-        self.person = person
-    
-    def get_person( self ):
-        return self.person
-
     def get_inventory( self ):
         return self.items
     
@@ -29,9 +19,6 @@ class Inventory:
     def can_add( self ):
         if self.get_count_items() > self.get_capacity():
             return False, "Vous avez plus de place dans votre inventaire"
-
-        if not self.get_person():
-            return False, "Il faut attribuer l'inventaire a un personnage obligatoirement"
 
         r, error = hook.run("Inventory::CanAdd", self.items)
         if r == False:
@@ -67,9 +54,6 @@ class Inventory:
     def can_remove( self, slot ):
         if slot < 0 or slot > self.get_capacity():
             return False, "Vous ne pouvez pas supprimer un item en dehors de la capacité de l'inventaire"
-
-        if not self.get_person():
-            return False, "Il faut attribuer l'inventaire a un personnage obligatoirement"
 
         if not self.exist_items( slot ):
             return False, "Impossible de trouver l'item"
