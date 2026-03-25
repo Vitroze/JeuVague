@@ -12,7 +12,7 @@ class Person:
         return self.health
 
     def take_damage( self, Person ):
-        power_attack = self.get_attack_with_defense( Person )
+        power_attack = Person.get_attack_with_defense( self )
         self.health = max(self.health - power_attack, 0)
 
         print(f"{Person.get_name()} attaque {self.get_name()} et lui inflige {power_attack} dégâts")
@@ -38,4 +38,20 @@ class Person:
         return self.health > 0
     
     def get_attack_with_defense( self, Person ):
-        return max(self.power_attack - Person.get_power_defense(), 1)
+        return max(self.get_power_attack() - Person.get_power_defense(), 1)
+    
+    def equip_item( self, item ):
+        if self.equiped_item:
+            return
+        
+        self.equiped_item = item
+        self.power_attack *= ( 1 + item.get_boost_damage() / 100 )
+        self.power_defense *= ( 1 + item.get_boost_defense() / 100 )
+
+    def unequiped_item( self ):
+        if not self.equiped_item:
+            return
+        
+        self.power_attack /= ( 1 + self.equiped_item.get_boost_damage() / 100 )
+        self.power_defense /= ( 1 + self.equiped_item.get_boost_defense() / 100 )
+        self.equiped_item = None
