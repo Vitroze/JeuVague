@@ -36,7 +36,7 @@ def request_add_item_monsters():
     if not Utils.string_isvalid( name_item ):
         return
     
-    if not Utils.getAllItems( name_item ):
+    if not DB.exist_items( name_item ):
         Utils.PrintError("Création de Personnage - Ajout d'item", "Impossible de trouver l'item.")
         return request_add_item_monsters()
     
@@ -79,5 +79,33 @@ def request_delete():
 
     Utils.back_option( 0 )
 
-def request_create_item( name:str=None, desc:str=None, boost_damage:int=None, boost_defense:int=None):
-    pass
+def request_create_item( name: str=None ):
+    Utils.clear_console(1)
+
+    name = name or Utils.request( f"Choisir le nom d'un item. Si vous prenez un nom déjà existant cela va modifier ces statistiques.", False )
+    if not Utils.string_isvalid( name ):
+        Utils.PrintError(f"Création d'un objet", "Le nom est invalide; Merci de rentrer un nom correcte")
+        return request_create_item( name )
+    
+    desc = Utils.request( f"Ecrivez une description.", False )
+    if not Utils.string_isvalid( desc ):
+        Utils.PrintError(f"Création d'un objet", "Le nom est invalide; Merci de rentrer un nom correcte")
+        return request_create_item( desc )
+    
+    boost_damage = Utils.request_percentage("Combien de pourcentage de dégats supplémentaire possède cette item ?", "Création d'un objet", True)
+    boost_defense = Utils.request_percentage("Combien de pourcentage de défense supplémentaire possède cette item ?", "Création d'un objet", True)
+
+    DB.create_item( name, desc, boost_damage, boost_defense )
+    Utils.back_option()
+
+def request_delete_item( name: str=None ):
+    Utils.clear_console(1)
+
+    name = name or Utils.request( f"Ecrivez le nom exacte de l'item.", False )
+    if not Utils.string_isvalid( name ) or not DB.exist_items( name ):
+        Utils.PrintError(f"Suppression d'un objet", "L'item n'existe pas.")
+        return request_create_item( name )
+    
+
+    DB.delete_item( name )
+    Utils.back_option()
