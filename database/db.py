@@ -7,10 +7,10 @@ CONFIG = {
     "database_name": "jeuvague",
 }
 
-DB, PLAYERDATA, CONFIGDATA = None, None, None
+DB, PLAYERDATA, CONFIGDATA, CONFIGITEMS = None, None, None, None
 
 def connect():
-    global DB, PLAYERDATA, CONFIGDATA
+    global DB, PLAYERDATA, CONFIGDATA, CONFIGITEMS
 
     oClient = DataBase.MongoClient(f"mongodb://{CONFIG['host']}:{CONFIG['port']}/")
     DB = oClient[CONFIG["database_name"]]
@@ -23,8 +23,12 @@ def connect():
     if f"{CONFIG["database_name"]}_config" not in collection_list:
         DB.create_collection(f"{CONFIG["database_name"]}_config")
 
+    if f"{CONFIG["database_name"]}_config_items" not in collection_list:
+        DB.create_collection(f"{CONFIG["database_name"]}_config_items")
+
     PLAYERDATA = DB[f"{CONFIG["database_name"]}_playerdata"]
     CONFIGDATA = DB[f"{CONFIG["database_name"]}_config"]
+    CONFIGITEMS = DB[f"{CONFIG["database_name"]}_config_items"]
 
     Utils.PrintSuccess("DataBase", "La base de donnée est connecté")
 
@@ -195,6 +199,48 @@ def save_score(username, value):
 
 def getAllScore(limit:int=5):
     return PLAYERDATA.find({}, {"_id": 0}).sort("score", -1).limit(limit)
+
+def exist_items( name:str ):
+    return CONFIGITEMS.find_one({
+        "name": name
+    }) != None
+
+def create_item( name:str, desc:str, boost_damage:int, boost_defense:int ):
+    if exist_items( name ):
+        CONFIGITEMS.update_one({
+            "name": name,
+        }, { 
+            "$set": {
+                "desc": desc,
+                "boost_damage": boost_damage,
+                "boost_defense": boost_defense,
+            }
+        })
+
+        Utils.PrintSuccess("DataBase", f"L'item '{ name }' a bien été mis à jour")
+        return
+    
+    CONFIGITEMS.insert_one({
+        "name": name,
+        "desc": desc,
+        "boost_damage": boost_damage,
+        "boost_defense": boost_defense,
+    })
+
+    Utils.PrintSuccess("DataBase", f"L'item '{ name }' a bien été enregistré")
+
+def delete_item( name: str ):
+    if not Utils.string_isvalid( name ):
+        Utils.PrintError("DataBase", "Le nom de l'item est incorrecte. Merci de mettre une chaine de caractère et un text avec au moins 1 caractère")
+        return
+
+    if not exist_items( name ):
+        Utils.PrintError("DataBase", "L'item n'existe pas")
+        return
+
+    CONFIGITEMS.delete_one({
+        "name": name,
+    })
 
 # create_allies("Ceci est un test", 5, 5, 100)
 # delete_allies( "Ceci est un test" )
