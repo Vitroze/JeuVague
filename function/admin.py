@@ -1,7 +1,7 @@
 import function.utils as Utils
 import database.db as DB
 
-def request_creation( team:str, name:str = None, attack:int = None, defense:int = None ):
+def request_creation( team:str, name:str = None):
     """Processus de création d'un allié ou d'un monstre"""
 
     Utils.clear_console( 1 )
@@ -13,33 +13,36 @@ def request_creation( team:str, name:str = None, attack:int = None, defense:int 
         request_creation( team )
         return
 
-    attack = attack or Utils.request_number( "La puissance d'attaque (Nombre positive).", f"Création de Personnage ({team})")
-    if not attack:
-        request_creation( team, name )
-        return
-    
+    attack = Utils.request_number( "La puissance d'attaque (Nombre positive).", f"Création de Personnage ({team})")
     attack = int( attack )
 
-    defense = defense or Utils.request_number( "La puissance de défense (Nombre positive).", f"Création de Personnage ({team})")
-    if not defense:
-        request_creation( team, name, attack )
-        return
-    
+    defense = Utils.request_number( "La puissance de défense (Nombre positive).", f"Création de Personnage ({team})")    
     defense = int( defense )
 
     health = Utils.request_number( "Le nombre de PV (Nombre positive).", f"Création de Personnage ({team})" )
-    if not Utils.number_isvalidpositive( health ):
-        request_creation( team, name, attack, defense )
-        return
-    
     health = int( health )
 
     if team == "alliés":
         DB.create_allies( name, attack, defense, health )
     elif team == "monstre":
-        DB.create_monsters( name, attack, defense, health )
+        item, percentage = request_add_item_monsters()
+
+        DB.create_monsters( name, attack, defense, health, item, percentage )
     
     Utils.back_option()
+
+def request_add_item_monsters():
+    name_item = Utils.request( f"Ecrivez un item lorsque de la mort du personnage (Laissez vide si rien) ?", False )
+    if not Utils.string_isvalid( name_item ):
+        return
+    
+    if not Utils.getAllItems( name_item ):
+        Utils.PrintError("Création de Personnage - Ajout d'item", "Impossible de trouver l'item.")
+        return request_add_item_monsters()
+    
+    percentageDrop = Utils.request_percentage(f"Ecrivez le pourcentage de chance que l'item apparait après la mort du monstre", "Création de personnage - Item")
+    
+    return name_item, percentageDrop
 
 def request_creations_choose_team():
     """Demande a l'utilisateur de choisir entre allies ou monstre pour le processus de création"""
@@ -75,3 +78,6 @@ def request_delete():
             DB.delete_monsters( choose )
 
     Utils.back_option( 0 )
+
+def request_create_item( name:str=None, desc:str=None, boost_damage:int=None, boost_defense:int=None):
+    pass

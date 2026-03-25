@@ -28,7 +28,7 @@ def connect():
 
     Utils.PrintSuccess("DataBase", "La base de donnée est connecté")
 
-def update_person( name: str, team: str, attack:int, defense: int, health: int ):
+def update_person( name: str, team: str, attack:int, defense: int, health: int, name_item:str = None, percentage_drop:int = None ):
     CONFIGDATA.update_one({
         "name": name,
         "team": team,
@@ -37,6 +37,8 @@ def update_person( name: str, team: str, attack:int, defense: int, health: int )
             "attack": attack,
             "defense": defense,
             "health": health,
+            "name_item": name_item,
+            "percentage_drop": percentage_drop
         }
     })
 
@@ -67,7 +69,7 @@ def create_allies( name: str, attack:int, defense:int, health: int ):
     Utils.PrintSuccess("DataBase", f"L'alliée '{ name }' a bien été enregistré")
 
 
-def create_monsters( name: str, attack:int, defense:int, health: int ):
+def create_monsters( name: str, attack:int, defense:int, health: int, name_item:str = None, percentage_drop:int = None):
     if not Utils.string_isvalid( name ):
         Utils.PrintError("DataBase", "Le nom du monstre est incorrecte. Merci de mettre une chaine de caractère et un text avec au moins 1 caractère")
         return
@@ -78,7 +80,7 @@ def create_monsters( name: str, attack:int, defense:int, health: int ):
 
     if is_exist_monsters( name ):
         Utils.PrintDebug("DataBase", "Ce monstre existe déjà.")
-        update_person( name, "monsters", attack, defense, health)
+        update_person( name, "monsters", attack, defense, health, name_item, percentage_drop )
         return
     
     CONFIGDATA.insert_one({
@@ -86,6 +88,8 @@ def create_monsters( name: str, attack:int, defense:int, health: int ):
         "attack": attack,
         "defense": defense,
         "health": health,
+        "name_item": name_item,
+        "percentage_drop": percentage_drop,
         "team": "monsters",
     })
 
