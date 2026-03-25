@@ -7,7 +7,7 @@ def request_creation( team:str, name:str = None):
     Utils.clear_console( 1 )
     print(f"============ {team} ============")
 
-    name = name or Utils.request( f"Choisir le nom du personnage. Si vous prenez un nom déjà existant cela va modifier ces statistiques.", False )
+    name = name or Utils.request( f"Choisir le nom du personnage. Si vous prenez un nom déjà existant cela va modifier ces statistiques.", True )
     if not Utils.string_isvalid( name ):
         Utils.PrintError(f"Création de Personnage ({team})", "Le nom est invalide; Merci de rentrer un nom correcte")
         request_creation( team )
@@ -63,7 +63,7 @@ def request_delete():
     Utils.clear_console(1)
 
     # Request
-    choose = Utils.request( "Merci de rentrer exactement le nom du personnage que vous souhaitez supprimer.")
+    choose = Utils.request( "Merci de rentrer exactement le nom du personnage que vous souhaitez supprimer.", True)
     team = Utils.request( "Merci de choisir l'équipe où le personnage doit être supprimer (allies ou monsters).")
 
     if not DB.is_exist_character( choose, team ):
@@ -82,14 +82,14 @@ def request_delete():
 def request_create_item( name: str=None ):
     Utils.clear_console(1)
 
-    name = name or Utils.request( f"Choisir le nom d'un item. Si vous prenez un nom déjà existant cela va modifier ces statistiques.", False )
+    name = name or Utils.request( f"Choisir le nom d'un item. Si vous prenez un nom déjà existant cela va modifier ces statistiques.", True )
     if not Utils.string_isvalid( name ):
         Utils.PrintError(f"Création d'un objet", "Le nom est invalide; Merci de rentrer un nom correcte")
         return request_create_item( name )
     
-    desc = Utils.request( f"Ecrivez une description.", False )
+    desc = Utils.request( f"Ecrivez une description.", True )
     if not Utils.string_isvalid( desc ):
-        Utils.PrintError(f"Création d'un objet", "Le nom est invalide; Merci de rentrer un nom correcte")
+        Utils.PrintError(f"Création d'un objet", "La description est invalide; Merci de rentrer un nom correcte")
         return request_create_item( desc )
     
     boost_damage = Utils.request_percentage("Combien de pourcentage de dégats supplémentaire possède cette item ?", "Création d'un objet", True)
@@ -101,7 +101,7 @@ def request_create_item( name: str=None ):
 def request_delete_item( name: str=None ):
     Utils.clear_console(1)
 
-    name = name or Utils.request( f"Ecrivez le nom exacte de l'item.", False )
+    name = name or Utils.request( f"Ecrivez le nom exacte de l'item.", True )
     if not Utils.string_isvalid( name ) or not DB.exist_items( name ):
         Utils.PrintError(f"Suppression d'un objet", "L'item n'existe pas.")
         return request_create_item( name )
