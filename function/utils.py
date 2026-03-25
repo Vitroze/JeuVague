@@ -1,5 +1,7 @@
 import os
 import function.color as Color
+from meta.person import Person
+from meta.item import Item, AllItems
 import main
 from time import sleep
 from math import floor
@@ -59,10 +61,17 @@ def request_number(text, title):
     choose = request( text )
     if not number_isvalidpositive( choose ):
         PrintError(title, "Merci de rentrer un nombre valide")
-        sleep(1)
-        return
+        return request_number(text, title)
     
     return int(choose)
+
+def request_percentage(text, title):
+    number = request_number(text, title)
+    if number < 0 or number > 100:
+        PrintError(title, "Merci de rentrer un pourcentage valide (entre 0 et 100%)")
+        return request_percentage(text, title)
+
+    return number
 
 def return_main( title, error ):
     """Retourne dans le menu principal tout en envoyant un message d'erreur"""
@@ -96,3 +105,28 @@ def format_time( time:int )->str:
         text += f"{text}{seconds}s"
 
     return text
+
+def person_isvalid( person: Person ):
+    return isinstance(person, Person)
+
+def item_isvalid( item: Item):
+    return isinstance(item, Item) and item.is_activate()
+
+TestItem = Item("Test", "Ceci est un item de test")
+TestItem.set_boost_damage(50)
+TestItem.activate_item()
+print("Item is valid : ", item_isvalid(TestItem))
+
+def getAllItems():
+    return AllItems
+
+def find_item_by_name( name: str ):
+    for item in getAllItems():
+        if item.get_name() != name:
+            continue
+        
+        return item
+        
+    PrintError("Recherche de l'Item", "Impossible de trouver l'item")
+    return False
+
