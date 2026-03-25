@@ -10,9 +10,11 @@ Bienvenue au jeu de la vague !
 Merci de choisir ces options (1 et 5) pour commencer votre partie :
 1. Création/Modification de personnage
 2. Supprimer un personnage
-3. Jouer (Composition d'équipe)
-4. Voir le classement
-5. Quitter
+3. Création/Modification d'un objet
+4. Supprimer un objet
+5. Jouer (Composition d'équipe)
+6. Voir le classement
+7. Quitter
 
 """
 
@@ -26,10 +28,14 @@ def choose_option():
         case "2":
             Admin.request_delete()
         case "3":
-            Game.manage_party()
+            Admin.request_create_item()
         case "4":
-            Score.showScore()
+            Admin.request_delete_item()
         case "5":
+            Game.manage_party()
+        case "6":
+            Score.showScore()
+        case "7":
             print("Aurevoir !")
         case _:
             Utils.PrintError( "Option", "Merci de choisir une option corrcete (entre 1 et 5)" )
