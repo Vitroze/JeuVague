@@ -7,7 +7,7 @@ import function.score as Score
 introduce = """
 Bienvenue au jeu de la vague !
 
-Merci de choisir ces options (1 et 4) pour commencer votre partie :
+Merci de choisir ces options (1 et 5) pour commencer votre partie :
 1. Création/Modification de personnage
 2. Supprimer un personnage
 3. Jouer (Composition d'équipe)
