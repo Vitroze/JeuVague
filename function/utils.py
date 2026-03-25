@@ -65,9 +65,9 @@ def request_number(text, title):
     
     return int(choose)
 
-def request_percentage(text, title):
+def request_percentage(text, title, no_superior):
     number = request_number(text, title)
-    if number < 0 or number > 100:
+    if number < 0 or (number > 100 and not no_superior):
         PrintError(title, "Merci de rentrer un pourcentage valide (entre 0 et 100%)")
         return request_percentage(text, title)
 
