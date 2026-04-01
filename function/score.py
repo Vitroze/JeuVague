@@ -15,8 +15,8 @@ def showScore():
     Utils.request("Appuyez sur ENTRER pour sortir du classement")
     Utils.back_option()
 
-def save_score( username:str, score:int ):
+def save_score( username:str, score:int, all_items:list=[] ):
     """Sauvegarde les données dans la base de donnée tout en retournant dans le menu principale après 2 secondes"""
 
-    DB.save_score( username, score )
+    DB.save_score( username, score, all_items )
     Utils.back_option( 2 )

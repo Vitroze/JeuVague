@@ -1,7 +1,9 @@
+import time
 import database.db as DB
 import function.utils as Utils
 import function.score as Score
 import function.fight as Fight
+import function.inventory as Inventory
 from meta.person import Person as ObjectPerson
 
 SIZE_TEAM = 3 # 3 Personnages dans l'équipe
@@ -96,8 +98,10 @@ def manage_party():
         show_allies(allies)
         request_choose_allies(allies)
 
-    score = Fight.fight()
-    Score.save_score(username, score)
+    inventory_player = Inventory.create_inventory(username)
+    request_inventory(inventory_player)
+    (score, all_items) = Fight.fight()
+    Score.save_score(username, score, all_items)
 
 def team_iscomplete()->bool:
     """Vérifie si l'équipe est complet"""
@@ -108,3 +112,30 @@ def get_teams()->dict:
     """Liste de nos alliés qu'on a sélectionné et qu'ils sont toujours en vie."""
 
     return Person
+
+introduce_inventory = f"""
+Choisissez les actions que vous souhaitez appliquer à votre inventaire.
+1. Voir les items ({Inventory.limit_items_per_page} par {Inventory.limit_items_per_page})
+2. Supprimer des items dans l'inventaire
+3. Equiper un personnage
+4. Commencer le combat
+"""
+def request_inventory(inventory):
+    Utils.clear_console()
+    print(introduce_inventory)
+
+    input = Utils.request("Quel action souhaitez-vous faire ?")
+
+    match input:
+        case "1":
+            Inventory.showAllItems(inventory)
+        case "2":
+            print("Check les portes")
+        case "3":
+            print("Test d'arme")
+        case "4":
+            return
+        case _:
+            Utils.PrintError("Gestion de l'inventaire", "Choissez une option valide.")
+            time.sleep(1)
+            request_inventory(inventory)

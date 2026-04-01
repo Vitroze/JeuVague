@@ -1,9 +1,13 @@
+from random import randint
+
 class Person:
     def __init__( self, name, attack, defense, health ):
         self.name = name
         self.power_attack = attack
         self.power_defense = defense
         self.health = health
+
+        self.drop_item, self.percent_item = None, None
 
     def set_health( self, hp ):
         self.health = hp;
@@ -18,6 +22,8 @@ class Person:
         print(f"{Person.get_name()} attaque {self.get_name()} et lui inflige {power_attack} dégâts")
         print(f"PV de {self.get_name()} : {self.get_health()}pv")
 
+        if self.health <= 0:
+            return self.died()
     
     def set_power_attack(self, power):
         self.power_attack = power
@@ -55,3 +61,14 @@ class Person:
         self.power_attack /= ( 1 + self.equiped_item.get_boost_damage() / 100 )
         self.power_defense /= ( 1 + self.equiped_item.get_boost_defense() / 100 )
         self.equiped_item = None
+
+    def set_item_droppable(self, item, percent:int):
+        self.drop_item = item
+        self.percent_item = percent
+
+    def died( self ):
+        if not self.percent_item or not self.drop_item:
+            return
+
+        if randint(0, 100) <= self.percent_item:
+            return self.drop_item
