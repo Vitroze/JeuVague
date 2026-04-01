@@ -1,5 +1,6 @@
 """
     Inspiré de https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/modules/hook.lua
+    Le système d'événement permet a d'autres développeurs d'intéragir avec le code sans modifier le code source.
 """
 hooks = {}
 
