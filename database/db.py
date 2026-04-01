@@ -156,7 +156,7 @@ def get_allies():
         "team": "allies"
     })
 
-def get_monsters(exclude:list={}):
+def get_monsters(exclude:dict={}):
     return CONFIGDATA.find({
         "team": "monsters"
     }, exclude)
@@ -166,7 +166,7 @@ def get_countmonsters():
         "team": "monsters"
     })
 
-def get_stats(name:str, team: str, exclude:list={})->list:
+def get_stats(name:str, team: str, exclude:dict={})->dict:
     return CONFIGDATA.find_one({
         "name": name,
         "team": team,
@@ -177,13 +177,14 @@ def is_username_exists(username)->bool:
         "username": username
     }) != None
 
-def save_score(username, value):
+def save_score(username, value, inventory=[]):
     if is_username_exists(username):
         PLAYERDATA.update_one({
             "username": username,
         }, { 
             "$set": {
-                "score": value
+                "score": value,
+                "inventory": inventory
             }
         })
 
@@ -193,6 +194,7 @@ def save_score(username, value):
     PLAYERDATA.insert_one({
         "username": username,
         "score": value,
+        "inventory": inventory
     })
 
     Utils.PrintSuccess("DataBase", f"Le score de {username} a bien été enregistré")
@@ -200,10 +202,13 @@ def save_score(username, value):
 def getAllScore(limit:int=5):
     return PLAYERDATA.find({}, {"_id": 0}).sort("score", -1).limit(limit)
 
-def exist_items( name:str ):
+def get_item( name: str, exclude:dict={} ):
     return CONFIGITEMS.find_one({
-        "name": name
-    }) != None
+        "name": name,
+    }, exclude)
+
+def exist_items( name:str ):
+    return get_item( name ) != None
 
 def create_item( name:str, desc:str, boost_damage:int, boost_defense:int ):
     if exist_items( name ):
@@ -242,6 +247,18 @@ def delete_item( name: str ):
         "name": name,
     })
 
+def get_playerdata(username):
+    return PLAYERDATA.find_one({
+        "username": username
+    })
+
+def get_inventory(username):
+    data = get_playerdata(username)
+    if data == None:
+        Utils.PrintError("DataBase", "Les données du joueurs n'existent pas")
+        return {}
+
+    return data["inventory"] or {}
 # create_allies("Ceci est un test", 5, 5, 100)
 # delete_allies( "Ceci est un test" )
 # create_monsters("Ceci est un test", 500, 25, 100)
