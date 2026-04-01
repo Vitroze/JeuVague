@@ -2,7 +2,7 @@ import os
 import function.color as Color
 from meta.person import Person
 from meta.item import Item
-import main
+from main import main
 from time import sleep
 from math import floor
 
@@ -50,7 +50,7 @@ def request( text:str, no_lower:bool=False )->str:
         choose = choose.lower()
 
     if choose == "return":
-        main.main()
+        back_option(0)
         return
     
     return choose
@@ -88,7 +88,7 @@ def back_option( duration:int = 1 ):
     """Retourner dans le menu principal après un certain temps"""
 
     sleep( duration )
-    main.main()
+    main()
 
 def format_time( time:int )->str:
     """Transforme un nombre en une chaine de caractère qui sera mis en forme (ex : 2h30m15s)"""
