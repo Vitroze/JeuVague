@@ -120,6 +120,12 @@ Choisissez les actions que vous souhaitez appliquer à votre inventaire.
 3. Equiper un personnage
 4. Commencer le combat
 """
+
+def in_progress(inventory):
+    Utils.PrintError("Choix - Inventaire", "L'option choisi est en cours de développement.")
+    time.sleep(1.5)
+    request_inventory(inventory)
+
 def request_inventory(inventory):
     Utils.clear_console()
     print(introduce_inventory)
@@ -130,9 +136,9 @@ def request_inventory(inventory):
         case "1":
             Inventory.showAllItems(inventory)
         case "2":
-            print("Check les portes")
+            in_progress(inventory)
         case "3":
-            print("Test d'arme")
+            in_progress(inventory)
         case "4":
             return
         case _:
