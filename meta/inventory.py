@@ -20,11 +20,13 @@ class Inventory:
         if self.get_count_items() > self.get_capacity():
             return False, "Vous avez plus de place dans votre inventaire"
 
-        r, error = hook.run("Inventory::CanAdd", self.items)
-        if r == False:
-            return False, error
+        result = hook.run("Inventory::CanAdd", self.items)
+        if result != None:
+            r, error = result
+            if r == False:
+                return False, error
 
-        return True
+        return True, ""
 
     def set_item( self, item ):
         if not Utils.item_isvalid( item ):
@@ -58,9 +60,11 @@ class Inventory:
         if not self.exist_items( slot ):
             return False, "Impossible de trouver l'item"
 
-        r, error = hook.run("Inventory::CanRemove", self.items)
-        if r == False:
-            return False, error
+        result = hook.run("Inventory::CanRemove", self.items)
+        if result != None:
+            r, error = result
+            if r == False:
+                return False, error
 
         return True
     
