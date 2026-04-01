@@ -68,13 +68,16 @@ def fight()->tuple[int, dict]:
     start_time = time()
     Monster = generator_monster()
     
-    while len(teams) > 0:
-        Utils.clear_console(1.5)
-        phase += 1
-        
-        print(f"============ Phase : {phase} ============")
-        ally_attack_monster( teams )
-        monster_attack_ally( teams )
+    try:
+        while len(teams) > 0:
+            Utils.clear_console(1.5)
+            phase += 1
+            
+            print(f"============ Phase : {phase} ============")
+            ally_attack_monster( teams )
+            monster_attack_ally( teams )
+    except KeyboardInterrupt:
+        return phase, all_items_drops
 
     print(f"Vous avez survéçu à {phase} phases pendant {Utils.format_time(time() - start_time)} secondes")
     if len(all_items_drops) > 0:
