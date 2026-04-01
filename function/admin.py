@@ -80,6 +80,8 @@ def request_delete():
     Utils.back_option( 0 )
 
 def request_create_item( name: str=None ):
+    """Processus de création de l'item"""
+
     Utils.clear_console(1)
 
     name = name or Utils.request( f"Choisir le nom d'un item. Si vous prenez un nom déjà existant cela va modifier ces statistiques.", True )
@@ -99,6 +101,8 @@ def request_create_item( name: str=None ):
     Utils.back_option()
 
 def request_delete_item( name: str=None ):
+    """Processus de suppresion de l'item"""
+
     Utils.clear_console(1)
 
     name = name or Utils.request( f"Ecrivez le nom exacte de l'item.", True )

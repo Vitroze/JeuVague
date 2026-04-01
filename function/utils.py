@@ -6,7 +6,7 @@ import main
 from time import sleep
 from math import floor
 
-def number_isvalidpositive( number: int ):
+def number_isvalidpositive( number: int )->bool:
     """Vérifie si la donnée saisie est un nombre. Si c'est une chaine de caractère alors on convertira en nombre si possible"""
 
     if isinstance(number, str) and number.isdigit():
@@ -14,7 +14,7 @@ def number_isvalidpositive( number: int ):
 
     return isinstance(number, int) and number >= 0
 
-def string_isvalid( text: str ):
+def string_isvalid( text: str )->bool:
     """Vérifie si la donnée saisie est une chaine de caractère"""
 
     return text and len(text) > 0
@@ -56,9 +56,10 @@ def request( text:str, no_lower:bool=False )->str:
     return choose
 
 def anykey():
+    """Arrêter le programme pour demander à l'utilisateur de continuer."""
     input("Appuyez sur n'import quel touche pour continuer")
 
-def request_number(text, title):
+def request_number(text, title)->int:
     """Demande à l'utilisateur de rentrer une chaine de caractère qui sera transformé en nombre"""
 
     choose = request( text )
@@ -68,7 +69,8 @@ def request_number(text, title):
     
     return int(choose)
 
-def request_percentage(text, title, no_superior=False):
+def request_percentage(text, title, no_superior=False)->int:
+    """Demande à l'utilisateur de rentrer une chaine de caractère entre 1 et 100 (Ou plus, si no_superior est sur true) qui sera transformé en nombre"""
     number = request_number(text, title)
     if number < 0 or (number > 100 and not no_superior):
         PrintError(title, "Merci de rentrer un pourcentage valide (entre 0 et 100%)")
@@ -109,21 +111,20 @@ def format_time( time:int )->str:
 
     return text
 
-def person_isvalid( person: Person ):
+def person_isvalid( person: Person )->bool:
+    """Vérifier si la personne existe"""
     return isinstance(person, Person)
 
-def item_isvalid( item: Item):
+def item_isvalid( item: Item)->bool:
+    """Vérifier si un item existe et qu'il a bien tout ces arguments définis"""
     return isinstance(item, Item) and item.is_activate()
 
-TestItem = Item("Test", "Ceci est un item de test")
-TestItem.set_boost_damage(50)
-TestItem.activate_item()
-print("Item is valid : ", item_isvalid(TestItem))
-
-def getAllItems():
+def getAllItems()->list:
+    """Récupérer tous les objets d'items"""
     return AllItems
 
-def find_item_by_name( name: str ):
+def find_item_by_name( name: str )->Item|bool:
+    """Trouve l'objet de l'item via son nom"""
     for item in getAllItems():
         if item.get_name() != name:
             continue

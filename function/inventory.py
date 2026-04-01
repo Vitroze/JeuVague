@@ -5,7 +5,8 @@ from meta.inventory import Inventory as InventoryObject
 from meta.item import Item as ItemObject
 from math import ceil
 
-def create_inventory(username):
+def create_inventory( username:str )->InventoryObject:
+    """Crée l'inventaire du joueur avec les données sauvegardés sur son nom d'utilisateur"""
     inventory_data = DB.get_inventory(username)
     inventory = InventoryObject()
     
@@ -28,19 +29,23 @@ def create_inventory(username):
 
     return inventory
 
-def request_page(inventory:InventoryObject):
-    numberTotalPage = ceil(inventory.get_count_items() / 5)
+def request_page( inventory:InventoryObject )->int:
+    """Demande a l'utilisateur d'écrire un nombre pour le système de page"""
+
+    numberTotalPage = ceil( inventory.get_count_items() / 5 )
     page = Utils.request_number(f"Merci d'entrer le numéro de la page (Entre 1 et {numberTotalPage} pages). Appuyer sur 0 pour sortir du menu", "Système d'inventaire")
     if page > numberTotalPage:
         return numberTotalPage
     elif page < 1:
-        Game.request_inventory(inventory)
+        Game.request_inventory( inventory )
         return 0 
     else:
         return page 
 
 limit_items_per_page = 5
-def showAllItems(inventory:InventoryObject, start=0, end=limit_items_per_page, page=1):
+def showAllItems( inventory:InventoryObject, start:int=0, end:int=limit_items_per_page, page:int=1 ):
+    """Affiche tous les items de l'inventaire"""
+
     Utils.clear_console()
 
     print(f"--------- Page {page} ---------")

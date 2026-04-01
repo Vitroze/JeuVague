@@ -85,10 +85,14 @@ def fight()->tuple[int, dict]:
 
     return phase, all_items_drops
 
-def addItemDrop(name_item):
+def addItemDrop( name_item:str ):
+    """Ajout un item droppable"""
+
     all_items_drops.append(name_item)
 
 def showAllItemDrop():
+    """Affiche tous les items récupérer par le joueur après la phase."""
+
     print("Liste de tous les items que vous avez récupérer")
     for name_item in all_items_drops:
         print(f" - {name_item}")

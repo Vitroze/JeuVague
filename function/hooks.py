@@ -1,10 +1,15 @@
 """
     Inspiré de https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/modules/hook.lua
     Le système d'événement permet a d'autres développeurs d'intéragir avec le code sans modifier le code source.
+    Pour plus de détail : 
+        - https://wiki.facepunch.com/gmod/Hook_Library_Usage
+        - https://wiki.facepunch.com/gmod/hook
 """
 hooks = {}
 
-def run(id, *args):
+def run( id:str, *args )->tuple|None:
+    """Lancer un événement"""
+
     if not exist(id):
         return
     
@@ -16,7 +21,9 @@ def run(id, *args):
         
     return None
         
-def protect_run(id, *args):
+def protect_run( id:str, *args )->tuple|None:
+    """Lancer un événement tout en se protégeant des erreurs qui arrête le programme"""
+
     if not exist(id):
         return
     
@@ -29,13 +36,16 @@ def protect_run(id, *args):
         except (RuntimeError, TypeError, NameError):
             pass
 
-def add(id, uniqueid, callback):
+def add( id:str, uniqueid:str, callback ):
+    """Cible un événement et intéragir avec"""
     if not exist(id):
         hooks[id] = {}
 
     hooks[id][uniqueid] = callback
 
-def remove(id, uniqueid):
+def remove( id:str, uniqueid:str ):
+    """Supprime l'événement enregistré"""
+
     if not exist(id):
         return
     
@@ -44,7 +54,8 @@ def remove(id, uniqueid):
     if len(hooks[id]):
         del hooks[id]
 
-def exist(id):
+def exist( id:str )->bool:
+    """Vérifie que l'événement existe"""
     return id in hooks
 
 #Test fonction

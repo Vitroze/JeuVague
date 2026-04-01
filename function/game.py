@@ -10,7 +10,7 @@ SIZE_TEAM = 3 # 3 Personnages dans l'équipe
 MONSTER_MIN = 1 # Il faut au moins 1 monstre pour pouvori commencer la partie
 
 Person = {}
-def list_nameallies():
+def list_nameallies()->dict:
     """Mettre sous forme de dictionnaire les prénoms des alliés. La clé sera comme une table séquentielle."""
 
     name = {}
@@ -122,11 +122,15 @@ Choisissez les actions que vous souhaitez appliquer à votre inventaire.
 """
 
 def in_progress(inventory):
+    """Affiche a l'utilisateur que cette fonctionnalité est en cours de développement"""
+
     Utils.PrintError("Choix - Inventaire", "L'option choisi est en cours de développement.")
     time.sleep(1.5)
     request_inventory(inventory)
 
 def request_inventory(inventory):
+    """Demande à l'utilisateur de choisir entre différents options de l'inventaire"""
+
     Utils.clear_console()
     print(introduce_inventory)
 
