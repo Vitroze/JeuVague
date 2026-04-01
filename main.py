@@ -7,7 +7,7 @@ import function.score as Score
 introduce = """
 Bienvenue au jeu de la vague !
 
-Merci de choisir ces options (1 et 5) pour commencer votre partie :
+Merci de choisir ces options (1 et 7) pour commencer votre partie :
 1. (ADMIN) Création/Modification de personnage
 2. (ADMIN) Supprimer un personnage
 3. (ADMIN) Création/Modification d'un objet
@@ -21,7 +21,7 @@ Merci de choisir ces options (1 et 5) pour commencer votre partie :
 def choose_option():
     """Menu Principal"""
 
-    request = input( "Choisir votre option (1 et 5) : ")
+    request = input( "Choisir votre option (1 et 7) : ")
     match request:
         case "1":
             Admin.request_creations_choose_team()
@@ -38,7 +38,7 @@ def choose_option():
         case "7":
             print("Aurevoir !")
         case _:
-            Utils.PrintError( "Option", "Merci de choisir une option correcte (entre 1 et 5)" )
+            Utils.PrintError( "Option", "Merci de choisir une option correcte (entre 1 et 7)" )
             choose_option()
 
 def main():
