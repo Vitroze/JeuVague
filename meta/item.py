@@ -1,12 +1,10 @@
 import function.hooks as hook
 
-AllItems = []
 class Item:
     def __init__( self, name, description ):
         self.name, self.desc = name, description
 
         self.activate = False
-        AllItems.append(self)
 
     def get_name( self ):
         return self.name
@@ -35,7 +33,3 @@ class Item:
     
     def is_activate( self ):
         return self.activate
-    
-    def remove( self ):
-        AllItems.remove( self )
-        del self

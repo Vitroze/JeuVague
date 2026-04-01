@@ -1,7 +1,7 @@
 import os
 import function.color as Color
 from meta.person import Person
-from meta.item import Item, AllItems
+from meta.item import Item
 import main
 from time import sleep
 from math import floor
@@ -118,19 +118,3 @@ def person_isvalid( person: Person )->bool:
 def item_isvalid( item: Item)->bool:
     """Vérifier si un item existe et qu'il a bien tout ces arguments définis"""
     return isinstance(item, Item) and item.is_activate()
-
-def getAllItems()->list:
-    """Récupérer tous les objets d'items"""
-    return AllItems
-
-def find_item_by_name( name: str )->Item|bool:
-    """Trouve l'objet de l'item via son nom"""
-    for item in getAllItems():
-        if item.get_name() != name:
-            continue
-        
-        return item
-        
-    PrintError("Recherche de l'Item", "Impossible de trouver l'item")
-    return False
-
