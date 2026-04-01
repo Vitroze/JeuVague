@@ -99,13 +99,13 @@ def format_time( time:int )->str:
 
     text = ""
     if hours > 0:
-        text += f"{text}{hours}h"
+        text += f"{hours}h"
 
     if minuts > 0:
-        text += f"{text}{minuts}m"
+        text += f"{minuts}m"
 
     if seconds > 0:
-        text += f"{text}{seconds}s"
+        text += f"{seconds}s"
 
     return text
 
