@@ -56,6 +56,3 @@ def showAllItems(inventory:InventoryObject, start=0, end=limit_items_per_page, p
     else:
         Utils.anykey()
         Game.request_inventory(inventory)
-
-def requestDeleteItems(inventory:InventoryObject):
-    input = Utils.request_number("Merci de rentrer une item valide")
