@@ -22,7 +22,7 @@ def list_nameallies():
 def show_allies(allies:dict):
     """Affiche dans la console les alliés qu'on peut prendre."""
 
-    Utils.clear_console(1)
+    Utils.clear_console()
     print("Choisir votre équipe parmis cette liste :")
 
     count = 1

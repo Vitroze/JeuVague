@@ -41,7 +41,7 @@ def request_page(inventory:InventoryObject):
 
 limit_items_per_page = 5
 def showAllItems(inventory:InventoryObject, start=0, end=limit_items_per_page, page=1):
-    Utils.clear_console(0)
+    Utils.clear_console()
 
     print(f"--------- Page {page} ---------")
     i = start + 1
