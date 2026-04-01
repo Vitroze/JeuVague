@@ -1,6 +1,7 @@
 import database.db as DB
 import function.game as Game
 import function.utils as Utils
+import function.hooks as hook
 from random import choice
 from meta.person import Person as ObjectPerson
 from time import sleep, time
@@ -68,6 +69,8 @@ def fight()->tuple[int, dict]:
     start_time = time()
     Monster = generator_monster()
     
+    hook.run("Fight::Start", teams, Monster)
+
     try:
         while len(teams) > 0:
             Utils.clear_console(1.5)
@@ -82,6 +85,8 @@ def fight()->tuple[int, dict]:
     print(f"Vous avez survéçu à {phase} phases pendant {Utils.format_time(time() - start_time)} secondes")
     if len(all_items_drops) > 0:
         showAllItemDrop()
+
+    hook.run("Fight::End", teams, Monster, all_items_drops)
 
     return phase, all_items_drops
 

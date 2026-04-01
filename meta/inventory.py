@@ -41,6 +41,8 @@ class Inventory:
         newindex = self.get_count_items() + 1
         self.items.append(item)
 
+        hook.run("Inventory::AddItem", newindex, item, self)
+
         return newindex
     
     def exist_items( self, slot ):
@@ -75,6 +77,7 @@ class Inventory:
             return
         
         del self.items[slot]
+        hook.run("Inventory::Remove", self, slot)
     
     def reset( self ):
         del self.items

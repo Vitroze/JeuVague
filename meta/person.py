@@ -1,4 +1,5 @@
 from random import randint
+import function.hooks as hook
 
 class Person:
     def __init__( self, name, attack, defense, health ):
@@ -54,6 +55,8 @@ class Person:
         self.power_attack *= ( 1 + item.get_boost_damage() / 100 )
         self.power_defense *= ( 1 + item.get_boost_defense() / 100 )
 
+        hook.run("Person::Equiped")
+
     def unequiped_item( self ):
         if not self.equiped_item:
             return
@@ -62,11 +65,14 @@ class Person:
         self.power_defense /= ( 1 + self.equiped_item.get_boost_defense() / 100 )
         self.equiped_item = None
 
+        hook.run("Person::Unequiped")
+
     def set_item_droppable(self, item, percent:int):
         self.drop_item = item
         self.percent_item = percent
 
     def died( self ):
+        hook.run("Person::Died", self)
         if not self.percent_item or not self.drop_item:
             return
 
