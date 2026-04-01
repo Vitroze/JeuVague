@@ -14,6 +14,8 @@ def run(id, *args):
         if r != None:
             return r
         
+    return None
+        
 def protect_run(id, *args):
     if not exist(id):
         return
