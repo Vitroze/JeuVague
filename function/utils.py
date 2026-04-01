@@ -12,7 +12,7 @@ def number_isvalidpositive( number: int ):
     if isinstance(number, str) and number.isdigit():
         number = int(number)
 
-    return isinstance(number, int) and number > 0
+    return isinstance(number, int) and number >= 0
 
 def string_isvalid( text: str ):
     """Vérifie si la donnée saisie est une chaine de caractère"""
@@ -54,6 +54,9 @@ def request( text:str, no_lower:bool=False )->str:
         return
     
     return choose
+
+def anykey():
+    input("Appuyez sur n'import quel touche pour continuer")
 
 def request_number(text, title):
     """Demande à l'utilisateur de rentrer une chaine de caractère qui sera transformé en nombre"""
