@@ -12,7 +12,7 @@ def showScore():
         print(f"{place}. {Data["username"]} - {Data["score"]}")
         place += 1
 
-    Utils.request("Appuyez sur ENTRER pour sortir du classement")
+    Utils.anykey("Appuyez sur ENTRER pour sortir du classement")
     Utils.back_option()
 
 def save_score( username:str, score:int, all_items:list=[] ):

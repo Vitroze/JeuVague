@@ -55,9 +55,9 @@ def request( text:str, no_lower:bool=False )->str:
     
     return choose
 
-def anykey():
+def anykey(text="Appuyez sur ENTRER pour continuer"):
     """Arrêter le programme pour demander à l'utilisateur de continuer."""
-    input("Appuyez sur n'import quel touche pour continuer")
+    input(text)
 
 def request_number(text, title)->int:
     """Demande à l'utilisateur de rentrer une chaine de caractère qui sera transformé en nombre"""
