@@ -8,10 +8,10 @@ introduce = """
 Bienvenue au jeu de la vague !
 
 Merci de choisir ces options (1 et 5) pour commencer votre partie :
-1. Création/Modification de personnage
-2. Supprimer un personnage
-3. Création/Modification d'un objet
-4. Supprimer un objet
+1. (ADMIN) Création/Modification de personnage
+2. (ADMIN) Supprimer un personnage
+3. (ADMIN) Création/Modification d'un objet
+4. (ADMIN) Supprimer un objet
 5. Jouer (Composition d'équipe)
 6. Voir le classement
 7. Quitter
