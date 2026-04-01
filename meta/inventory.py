@@ -14,7 +14,7 @@ class Inventory:
         return self.capacity
     
     def get_count_items( self ):
-        return self.items.count()
+        return len(self.items)
 
     def can_add( self ):
         if self.get_count_items() > self.get_capacity():
