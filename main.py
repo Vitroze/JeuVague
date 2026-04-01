@@ -38,7 +38,7 @@ def choose_option():
         case "7":
             print("Aurevoir !")
         case _:
-            Utils.PrintError( "Option", "Merci de choisir une option corrcete (entre 1 et 5)" )
+            Utils.PrintError( "Option", "Merci de choisir une option correcte (entre 1 et 5)" )
             choose_option()
 
 def main():
